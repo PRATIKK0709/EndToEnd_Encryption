@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End-to-End Encryption Explained</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap');
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        header {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #007bff;
+            font-family: 'Sometype Mono', monospace;
+            font-optical-sizing: auto;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        section {
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        #chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #007bff;
+        }
+
+        .message-content {
+            word-wrap: break-word;
+            color: #333;
+        }
+
+        #input-container {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            color: #333;
+            outline: none;
+        }
+
+        #send-button {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 30px 10px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="sometype-mono-uniquifier">End-to-End Encryption</h1>
+        <p>Ensuring Secure Communication in a Connected World</p>
+    </header>
+
+    <section id="explanation">
+        <h2>What is End-to-End Encryption?</h2>
+        <p>
+            End-to-End Encryption (E2EE) is a secure communication method where only the communicating users can read the messages. 
+            In other words, it prevents third-parties from accessing data while it's transferred from one end system to another.
+        </p>
+        <p>
+            E2EE ensures that even if data is intercepted, it remains confidential and secure because only the sender and recipient have the necessary keys to decrypt the information.
+        </p>
+    </section>
+
+    <section id="how-it-works">
+        <h2>How does End-to-End Encryption work?</h2>
+        <p>
+            When you send a message, it gets encrypted on your device using a unique key. This encrypted message is then sent to the recipient's device where it gets decrypted using the corresponding key.
+        </p>
+        <p>
+            This process ensures that the message is secure during transit and only readable by the intended recipient.
+        </p>
+    </section>
+
+    <section id="live-chat">
+        <h2>Live Chat Example</h2>
+        <div id="chat-box"></div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </section>
+
+    <script>
+        function generateKey() {
+            // Generate a random key (simplified for demonstration)
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function encryptMessage(message, key) {
+            // Encrypt the message (simplified for demonstration)
+            // In a real-world scenario, a more robust encryption algorithm should be used
+            return btoa(message + key);
+        }
+
+        function decryptMessage(encryptedMessage, key) {
+            // Decrypt the message (simplified for demonstration)
+            // In a real-world scenario, a more robust decryption algorithm should be used
+            return atob(encryptedMessage).replace(key, '');
+        }
+
+        document.getElementById("send-button").addEventListener("click", function() {
+            const messageInput = document.getElementById("message-input");
+            const chatBox = document.getElementById("chat-box");
+
+            const message = messageInput.value.trim();
+            if (message !== "") {
+                // Simulate key exchange
+                const aliceKey = generateKey();
+                const bobKey = aliceKey; // In a real scenario, Bob would have his own key
+
+                const encryptedMessage = encryptMessage(message, aliceKey);
+
+                // Simulate sending the encrypted message over the network
+                const decryptedMessage = decryptMessage(encryptedMessage, bobKey);
+
+                const newMessage = document.createElement("div");
+                newMessage.className = "message";
+                newMessage.innerHTML = `
+                    <div class="message-sender">You (Alice):</div>
+                    <div class="message-content">${message} (Encrypted: ${encryptedMessage})</div>
+                `;
+                chatBox.appendChild(newMessage);
+
+                const receivedMessage = document.createElement("div");
+                receivedMessage.className = "message";
+                receivedMessage.innerHTML = `
+                    <div class="message-sender">Bob:</div>
+                    <div class="message-content">${decryptedMessage}</div>
+                `;
+                chatBox.appendChild(receivedMessage);
+
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                messageInput.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
